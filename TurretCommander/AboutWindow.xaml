@@ -1,0 +1,25 @@
+﻿<Window x:Class="TurretCommander.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TurretCommander"
+        mc:Ignorable="d"
+        Title="Über TurretCommander" Height="194" Width="273.231">
+    <Grid>
+        <Label x:Name="lblVersion" Content="Version" Height="23" Width="100" HorizontalAlignment="Left" Margin="81,10,0,0" VerticalAlignment="Top"/>
+        <Label Content="Version:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Label Content="Author:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,72,0,0"/>
+
+        <Label Content="Copyright:" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+        <Label Content="DRTools" HorizontalAlignment="Left" Margin="81,41,0,0" VerticalAlignment="Top"/>
+        <Label Content="Dominik Ramsaier" HorizontalAlignment="Left" Margin="81,72,0,0" VerticalAlignment="Top"/>
+        <Label Content="Mail:" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top"/>
+        <Label Content="Mobil:" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top"/>
+        <Label HorizontalAlignment="Left" Margin="81,103,0,0" VerticalAlignment="Top">
+            <Hyperlink NavigateUri="mailto:dominik.ramsaier@de.ibm.com">Dominik.Ramsaier@de.ibm.com</Hyperlink>
+        </Label>
+        <Label Content="+49 160 9090 2069" HorizontalAlignment="Left" Margin="81,134,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

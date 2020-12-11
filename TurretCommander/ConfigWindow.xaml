@@ -1,0 +1,18 @@
+﻿<Window x:Class="TurretCommander.ConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TurretCommander"
+        mc:Ignorable="d"
+        Title="Einstellungen" Height="140.4" Width="240">
+    <Grid>
+        <Button x:Name="btnEinstellungenSpeichern" Content="Speichern" HorizontalAlignment="Left" Margin="146,70,0,0" VerticalAlignment="Top" Width="75" Click="btnEinstellungenSpeichern_Click"/>
+        <Label Content="Benutzername" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.068,-0.156"/>
+        <Label Content="Passwort" HorizontalAlignment="Left" Margin="40,41,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtUsername" HorizontalAlignment="Left" Height="23" Margin="101,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.155,0.591"/>
+        <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="101,42,0,0" VerticalAlignment="Top" Height="23" Width="120"/>
+
+
+    </Grid>
+</Window>
