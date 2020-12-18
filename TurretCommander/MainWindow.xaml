@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TurretCommander"
         mc:Ignorable="d"
-        Title="TurretCommander" Height="486.801" Width="809">
+        Title="TurretCommander" Height="501.201" Width="809">
     <Window.Resources>
         <Style x:Key="MyWaterMarkStyle" TargetType="{x:Type TextBox}">
             <Setter Property="Template">
@@ -51,7 +51,7 @@
             <ComboBoxItem Content="Use User Input" Tag="0" IsSelected="True"/>
         </ComboBox>
         <CheckBox x:Name="cbxRoot" Content="Root?" HorizontalAlignment="Left" Margin="551,58,0,0" VerticalAlignment="Top"/>
-        <Button Content="DEBUG" Visibility="Collapsed" HorizontalAlignment="Left" Margin="551,10,0,0" VerticalAlignment="Top" Width="49" Click="Button_Click"/>
+        <Button Content="DEBUG" Visibility="Hidden" HorizontalAlignment="Left" Margin="551,28,0,0" VerticalAlignment="Top" Width="49" Click="Button_Click"/>
         <TextBox x:Name="txtTurret" Style="{StaticResource MyWaterMarkStyle}" Tag="IP/XPB" HorizontalAlignment="Left" Height="23" Margin="341,54,0,0" TextWrapping="Wrap" TextAlignment="Justify"  VerticalAlignment="Top" Width="100"/>
         <Button x:Name="btnAddTurret" Content="Turret hinzufügen" HorizontalAlignment="Left" Margin="446,54,0,0" VerticalAlignment="Top" Width="100" Height="23" Click="btnAddTurret_Click"/>
         <DockPanel>
@@ -68,12 +68,14 @@
             <StackPanel></StackPanel>
         </DockPanel>
         <DockPanel>
-            <StatusBar DockPanel.Dock="Bottom" Height="20">
-                <ProgressBar Width="100" Value="50">
-                    
-                </ProgressBar>
+            <StatusBar DockPanel.Dock="Bottom" Height="30">
+                <ProgressBar x:Name="pbFortschritt" Maximum="100" Minimum="0" Width="720" Height="18" Value="0" Padding="0,0,0,0" Visibility="Visible"/>
+                <Separator/>
+                <Label x:Name="lblFortschritt" Margin="0,0,0,0" Content="100,00%" HorizontalAlignment="Center" Visibility="Visible"/>
+
             </StatusBar>
-            <StackPanel></StackPanel>
+            <StackPanel/>
+            
         </DockPanel>
     </Grid>
 </Window>

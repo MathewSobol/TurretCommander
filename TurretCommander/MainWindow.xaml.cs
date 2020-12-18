@@ -17,6 +17,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using System.ComponentModel;
+using System.Dynamic;
+using System.Globalization;
 
 namespace TurretCommander
 {
@@ -164,12 +167,12 @@ namespace TurretCommander
 
         private void btnStartQuery_Click(object sender, RoutedEventArgs e)
         {
-            Username = Properties.Settings.Default.Username;
-            Password = Properties.Settings.Default.Password;
-            int i = 0;
+            pbFortschritt.Value = 0;
+            lblFortschritt.Content = "0,00%";
             string Command;
             bool Root = false;
-            if (cbxCommands.SelectedIndex==0)
+
+            if (cbxCommands.SelectedIndex == 0)
             {
                 Command = txtCommand.Text;
             }
@@ -177,20 +180,50 @@ namespace TurretCommander
             {
                 Command = cbxCommands.SelectedValue.ToString();
             }
+
             if (cbxRoot.IsChecked == true) Root = true;
+
             if (Username == "" || Password == "")
             {
                 MessageBox.Show("Bitte Benutzername und Passwort eingeben.");
                 return;
             }
+            
+            var DynASync = new { Anzahl = Turrets.Count() * 2, Kommando = Command, Sudo = Root };
 
-            foreach (Turret Fon in Turrets)
-            {
-                Turrets[i].XPB = SSHconnection(Fon.IP, "hostname", false, Username, Password);
-                Turrets[i].Ergebnis = SSHconnection(Fon.IP, Command, Root, Username, Password);
-                i++;
-            }
-            dgTurrets.Items.Refresh();
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += worker_DoWork;
+            worker.ProgressChanged += worker_ProgressChanged;
+            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
+            worker.RunWorkerAsync((Turrets.Count() * 2).ToString() + "°" + Command + "°" + Root.ToString());
+            //Username = Properties.Settings.Default.Username;
+            //Password = Properties.Settings.Default.Password;
+            //int i = 0;
+            //string Command;
+            //bool Root = false;
+            //if (cbxCommands.SelectedIndex==0)
+            //{
+            //    Command = txtCommand.Text;
+            //}
+            //else
+            //{
+            //    Command = cbxCommands.SelectedValue.ToString();
+            //}
+            //if (cbxRoot.IsChecked == true) Root = true;
+            //if (Username == "" || Password == "")
+            //{
+            //    MessageBox.Show("Bitte Benutzername und Passwort eingeben.");
+            //    return;
+            //}
+
+            //foreach (Turret Fon in Turrets)
+            //{
+            //    Turrets[i].XPB = SSHconnection(Fon.IP, "hostname", false, Username, Password);
+            //    Turrets[i].Ergebnis = SSHconnection(Fon.IP, Command, Root, Username, Password);
+            //    i++;
+            //}
+            //dgTurrets.Items.Refresh();
         }
 
         private void btnExportToCSV_Click(object sender, RoutedEventArgs e)
@@ -206,13 +239,7 @@ namespace TurretCommander
             myExport.ExportToFile(Environment.CurrentDirectory + "\\Export.csv");
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            ComboBoxItem addenum = new ComboBoxItem();
-            addenum.Content = "ADDED";
-            addenum.Tag = "cat date.txt";
-            cbxCommands.Items.Add(addenum);
-        }
+        
 
         private void btnAddTurret_Click(object sender, RoutedEventArgs e)
         {
@@ -239,5 +266,110 @@ namespace TurretCommander
             Contact.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             Contact.ShowDialog();
         }
+
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            pbFortschritt.Value = 0;
+            lblFortschritt.Content = "0,00%";
+            string Command;
+            bool Root = false;
+
+            if (cbxCommands.SelectedIndex == 0)
+            {
+                Command = txtCommand.Text;
+            }
+            else
+            {
+                Command = cbxCommands.SelectedValue.ToString();
+            }
+
+            if (cbxRoot.IsChecked == true) Root = true;
+
+            if (Username == "" || Password == "")
+            {
+                MessageBox.Show("Bitte Benutzername und Passwort eingeben.");
+                return;
+            }
+            //dynamic DynASync = new ExpandoObject();
+            //DynASync.Anzahl = Turrets.Count() * 2;
+            //DynASync.Kommando = Command;
+            //DynASync.Sudo = Root;
+
+            var DynASync = new { Anzahl = Turrets.Count() * 2, Kommando = Command, Sudo = Root };
+
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += worker_DoWork;
+            worker.ProgressChanged += worker_ProgressChanged;
+            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
+            worker.RunWorkerAsync((Turrets.Count()*2).ToString() + "°" + Command + "°" + Root.ToString());
+
+        }
+
+        void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            String[] subs = e.Argument.ToString().Split('°');
+            string Command = subs[1];
+            bool Root = Convert.ToBoolean(subs[2]);
+            int max = Convert.ToInt32(subs[0]);
+            //int max = (int)e.Argument;
+            
+            int result = 0;
+            
+            Username = Properties.Settings.Default.Username;
+            Password = Properties.Settings.Default.Password;
+            int i = 0;
+            
+            int progressPercentage = Convert.ToInt32(((double)i / max) * 100);
+
+            //if (cbxCommands.SelectedIndex == 0)
+            //{
+            //    Command = txtCommand.Text;
+            //}
+            //else
+            //{
+            //    Command = cbxCommands.SelectedValue.ToString();
+            //}
+            
+            //if (cbxRoot.IsChecked == true) Root = true;
+
+            //if (Username == "" || Password == "")
+            //{
+            //    MessageBox.Show("Bitte Benutzername und Passwort eingeben.");
+            //    return;
+            //}
+
+            foreach (Turret Fon in Turrets)
+            {
+                Turrets[i].XPB = SSHconnection(Fon.IP, "hostname", false, Username, Password);
+                progressPercentage = Convert.ToInt32(((double)(i*2 +1) / max) * 100);
+                (sender as BackgroundWorker).ReportProgress(progressPercentage, Convert.ToDouble(i*2+1)/Convert.ToDouble(max));
+                Turrets[i].Ergebnis = SSHconnection(Fon.IP, Command, Root, Username, Password);
+                progressPercentage = Convert.ToInt32(((double)(i*2+1 +1) / max) * 100);
+                (sender as BackgroundWorker).ReportProgress(progressPercentage, Convert.ToDouble(i * 2 + 2) / Convert.ToDouble(max));
+                i++;
+            }
+            //dgTurrets.Items.Refresh();
+            
+
+            e.Result = max/2;
+        }
+
+        void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            dgTurrets.Items.Refresh();
+            pbFortschritt.Value = e.ProgressPercentage;
+            lblFortschritt.Content = (Convert.ToDouble(e.UserState)).ToString("P");
+            //lblFortschritt.Content = (Convert.ToDouble(e.ProgressPercentage)/100).ToString("P");
+        }
+
+        void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            MessageBox.Show("Es wurden " + e.Result + " Turrets abgefragt.");
+        }
+
+
+
     }
 }
